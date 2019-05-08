@@ -4,10 +4,10 @@ const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
 const saveBtn = document.getElementById("jsSave");
-
+const refreshBtn = document.getElementById("jsRefresh");
 
 const CANVAS_SIZE = 500;
-const INITIAL_COLOR = "#2c2c2c";
+const INITIAL_COLOR = "#2c2c2c"; // 검정색
 
 canvas.width = 500;
 canvas.height = 500;
@@ -75,16 +75,44 @@ function handleCanvasClick() {
   }
 }
 
-function handleCM(event){
-    event.preventDefault();
+function handleCM(event) {
+  event.preventDefault();
 }
 
-function handleSaveClick(){
-    const image = canvas.toDataURL();
-    const link = document.createElement("a");
-    link.href = image;
-    link.download = "PaintJS_fwanggus";
-    link.click();
+function handleSaveClick() {
+  const image = canvas.toDataURL();
+  const link = document.createElement("a");
+  link.href = image;
+  link.download = "PaintJS_fwanggus";
+  link.click();
+}
+
+function handleRefresh() {
+  const result = window.confirm("ARE YOU SURE REFRESHING ALL STUFF? ");
+
+  if (result) {
+    filling = true;
+    ctx.fillStyle = "white";
+    handleCanvasClick();
+
+    // initializing all set!
+    filling = false;
+    ctx.fillStyle = INITIAL_COLOR;
+    ctx.strokeStyle = INITIAL_COLOR;
+    ctx.lineWidth = 2.5;
+    range.value = 2.5;
+  } else {
+    console.log("you clicked 'cancel' !");
+  }
+}
+
+function confirmSaveFile() {
+  const confirmSave = window.confirm("ARE YOU SURE SAVING THIS PAINTING ? ");
+  if (confirmSave) {
+    handleSaveClick();
+  }
+  else{
+  }
 }
 
 if (canvas) {
@@ -109,5 +137,9 @@ if (mode) {
 }
 
 if (saveBtn) {
-    saveBtn.addEventListener("click", handleSaveClick);
+  saveBtn.addEventListener("click", confirmSaveFile);
+}
+
+if (refreshBtn) {
+  refreshBtn.addEventListener("click", handleRefresh);
 }
